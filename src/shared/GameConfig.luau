@@ -5,6 +5,8 @@
 local GameConfig = {}
 
 GameConfig.GAME_NAME = "Warung Brainrot Bazaar"
+-- A new player starts with $250: the cheapest Common costs $50, so the
+-- first buy happens in seconds and the loop is learned before saving starts.
 GameConfig.START_CASH = 250
 GameConfig.CONVEYOR_SPAWN_SECONDS = 6
 GameConfig.CONVEYOR_SLOTS = 8
@@ -12,6 +14,10 @@ GameConfig.CONVEYOR_LENGTH = 120
 GameConfig.BASE_SLOTS_START = 6
 GameConfig.BASE_SLOTS_MAX = 12
 GameConfig.MAX_BASES = 8
+
+-- Selling a brainrot back pays half its mutated price: enough to undo a
+-- misclick, never enough to profit by flipping brainrots back and forth.
+GameConfig.SELL_REFUND = 0.5
 
 -- Stealing: lock the base, slap the thief, carry the catch home.
 GameConfig.LOCK_SECONDS = 20

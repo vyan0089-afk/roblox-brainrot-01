@@ -109,6 +109,9 @@ function BrainrotModels.buildModel(brainrotId, mutationName)
 	subLabel.Font = Enum.Font.SourceSansBold
 	subLabel.Parent = billboard
 
+	-- The ball body is the PrimaryPart, so the conveyor moves a brainrot by
+	-- its body and the name billboard (AlwaysOnTop) stays readable through
+	-- the market crowd. Eyes sit on the +Z face, the side that faces buyers.
 	model.PrimaryPart = body
 	return model
 end

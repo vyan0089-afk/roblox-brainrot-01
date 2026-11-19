@@ -16,6 +16,8 @@ BrainrotCatalog.RARITIES = {
 	{ name = "Secret", color = { 60, 240, 220 }, chance = 0.5, incomeMult = 400 },
 }
 
+-- The rarity chances add to exactly 100 (38+26+17+10+6+2.5+0.5), so every
+-- roll lands in exactly one tier — no roll ever falls through the table.
 -- Mutation ladder: 8 mutations, each a real income multiplier.
 BrainrotCatalog.MUTATIONS = {
 	{ name = "Normal", mult = 1, chance = 62 },
@@ -28,6 +30,9 @@ BrainrotCatalog.MUTATIONS = {
 	{ name = "Cosmic", mult = 10, chance = 0.8 },
 }
 
+-- Mutation chances also add to exactly 100, same guarantee as rarities.
+-- Income climbs about 4x per rarity tier: $5/s for the cheapest Common to
+-- $50,000/s for the Tsunami Sambal Titan, four orders of magnitude to chase.
 -- name, rarity index (1-7), income $/s, price $, colour, hat/accessory
 local ROWS = {
 	-- Common (12)
