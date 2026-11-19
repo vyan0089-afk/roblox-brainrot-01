@@ -1,0 +1,1 @@
+{"steps":[{"screenshot":"1-thumbnail.png"},{"keys":["Right"],"screenshot":"2-conveyor.png","wait_ms":1000},{"keys":["E"],"screenshot":"3-steal.png","wait_ms":1000},{"keys":["L"],"screenshot":"4-wave.png","wait_ms":1000}],"tour":1}
