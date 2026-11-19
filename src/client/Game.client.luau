@@ -2,6 +2,8 @@
 -- Builds the HUD and shop, binds E (slap) and L (lock base), clicks on
 -- conveyor brainrots to buy them, and shows hazard warnings.
 -- The server owns all state; this script only shows it and asks for it.
+-- Keys go through ContextActionService (never UserInputService.InputBegan),
+-- so they never fight the default camera controls.
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -96,7 +98,9 @@ ContextActionService:BindAction("LockBase", lockBase, false, Enum.KeyCode.L)
 ContextActionService:BindAction("ToggleIndex", toggleIndex, false, Enum.KeyCode.I)
 
 -- Click a brainrot on the conveyor belt to buy it; click your base pad
--- while carrying a stolen brainrot to bank it.
+-- while carrying a stolen brainrot to bank it. A click is routed by what it
+-- hits: a model under ConveyorBrainrots buys, any part with "Pad" in its
+-- name banks a steal, anything else is ignored.
 local mouse = player:GetMouse()
 mouse.Button1Down:Connect(function()
 	local target = mouse.Target

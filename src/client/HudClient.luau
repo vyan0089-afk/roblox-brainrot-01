@@ -2,6 +2,8 @@
 -- base lock state, hazard banner and the Index count (60 brainrots).
 -- One job only: build and update the HUD. Kept clear of the top-left
 -- corner, where Roblox's own menu buttons sit.
+-- The hazard banner hides itself 9 seconds after it appears: hazard
+-- warnings are 5-8 seconds, so the banner always outlives the warning.
 
 local HudClient = {}
 
@@ -66,6 +68,8 @@ function HudClient.buildHud(playerGui)
 	return gui
 end
 
+-- Snapshots arrive from the server every second; cash is already floored
+-- server-side, so the HUD only ever shows whole dollars.
 function HudClient.updateHud(gui, snapshot)
 	local cash = gui:FindFirstChild("CashLabel")
 	local income = gui:FindFirstChild("IncomeLabel")

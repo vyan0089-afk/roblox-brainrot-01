@@ -9,6 +9,9 @@ local BrainrotCatalog = require(Shared.BrainrotCatalog)
 
 local ShopClient = {}
 
+-- Buttons stack in GameConfig order (eggs, pets, rebirth, upgrades) and the
+-- panel grows to fit them (its height is set to y + 8 after the loops), so
+-- adding another egg, pet or upgrade row can never overflow the panel.
 local function makeButton(parent, name, text, y)
 	local button = Instance.new("TextButton")
 	button.Name = name
@@ -116,6 +119,8 @@ function ShopClient.buildIndexBook(playerGui, seen)
 	grid.TextSize = 15
 	grid.Font = Enum.Font.SourceSans
 	grid.TextColor3 = Color3.fromRGB(255, 255, 255)
+	-- One line per brainrot, in catalog order: a tick for owned, a dot for
+	-- unseen, with rarity and $/s beside the name.
 	local lines = {}
 	for _, b in ipairs(BrainrotCatalog.BRAINROTS) do
 		local mark = (seen ~= nil and seen[b.id]) and "✓" or "·"

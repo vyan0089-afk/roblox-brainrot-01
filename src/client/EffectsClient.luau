@@ -6,6 +6,9 @@ local TweenService = game:GetService("TweenService")
 
 local EffectsClient = {}
 
+-- Flashes are full-screen frames tweened to fully transparent and then
+-- destroyed (gold 0.7s, red 0.9s), so repeated effects never pile up
+-- invisible frames on the HUD.
 function EffectsClient.flashGold(gui)
 	local flash = Instance.new("Frame")
 	flash.Name = "GoldFlash"
@@ -34,6 +37,8 @@ function EffectsClient.flashRed(gui)
 	end)
 end
 
+-- A pop label rises from 40% to 30% of the screen height while fading out
+-- over 1.2 seconds, then destroys itself.
 function EffectsClient.popLabel(gui, text)
 	local label = Instance.new("TextLabel")
 	label.Name = "PopLabel"
