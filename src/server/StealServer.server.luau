@@ -22,6 +22,8 @@ function StealServer_lockBase(player)
 	if os.clock() < state.lockCooldownUntil then
 		return
 	end
+	-- The cooldown starts when the lock EXPIRES, not when it is cast, so a
+	-- base is locked for its duration and then open for at least 60 seconds.
 	state.lockedUntil = os.clock() + StateStore.lockDuration(state)
 	state.lockCooldownUntil = state.lockedUntil + GameConfig.LOCK_COOLDOWN_SECONDS
 end
@@ -55,6 +57,9 @@ function StealServer_finishCarry(player)
 	if state == nil or state.carrying == nil then
 		return
 	end
+	-- A thief gets 12 seconds of carry time plus a 30-second grace; after
+	-- that the stolen brainrot vanishes instead of banking, so a thief
+	-- cannot stall a steal forever by hiding with the catch.
 	if os.clock() - state.stealStartedAt > GameConfig.STEAL_CARRY_SECONDS + 30 then
 		state.carrying = nil
 		return
@@ -89,6 +94,8 @@ function StealServer_slapPlayer(player, target)
 	if (targetRoot.Position - root.Position).Magnitude > GameConfig.SLAP_RANGE then
 		return
 	end
+	-- Slap Power adds 40% knockback per level, and every slap also launches
+	-- the target 18 studs up, so a slapped thief is thrown, not just pushed.
 	local knockback = GameConfig.SLAP_KNOCKBACK * (1 + 0.4 * state.upgrades[2])
 	targetRoot.AssemblyLinearVelocity = (targetRoot.Position - root.Position).Unit * knockback + Vector3.new(0, 18, 0)
 	local targetState = StateStore.getState(target)

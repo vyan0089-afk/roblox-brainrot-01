@@ -6,11 +6,14 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local StateStore = require(game:GetService("ServerScriptService").Server.StateStore)
 local BrainrotCatalog = require(ReplicatedStorage:WaitForChild("Shared").BrainrotCatalog)
+local GameConfig = require(ReplicatedStorage:WaitForChild("Shared").GameConfig)
 
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local StateUpdate = Remotes:WaitForChild("StateUpdate")
 local SellRemote = Remotes:WaitForChild("SellBrainrot")
 
+-- Income ticks once a second, adding the whole $/s at once, so cash never
+-- drifts by fractions between ticks and the HUD always shows whole dollars.
 function EconomyServer_tickIncome()
 	for _, player in ipairs(Players:GetPlayers()) do
 		local state = StateStore.getState(player)
@@ -36,8 +39,10 @@ function EconomyServer_sellBrainrot(player, collectionIndex)
 	if entry == nil then
 		return
 	end
+	-- Selling pays back half the mutated price (GameConfig.SELL_REFUND):
+	-- a misclick costs half, not everything.
 	StateStore.removeBrainrot(state, collectionIndex)
-	state.cash += math.floor(BrainrotCatalog.priceFor(owned.brainrotId, owned.mutation) * 0.5)
+	state.cash += math.floor(BrainrotCatalog.priceFor(owned.brainrotId, owned.mutation) * GameConfig.SELL_REFUND)
 	StateUpdate:FireClient(player, StateStore.snapshotForClient(state))
 end
 

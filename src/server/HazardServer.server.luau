@@ -15,6 +15,9 @@ local HazardAlert = Remotes:WaitForChild("HazardAlert")
 
 local cart = Workspace:WaitForChild("HazardCart")
 
+-- The cart crosses diagonally from (-90, 30) to (90, -30) in 60 steps of
+-- 3 studs; anyone still loitering in the middle lane (Z within 12 studs)
+-- when it finishes its run is knocked flying and loses $150.
 function HazardServer_runawayCart()
 	HazardAlert:FireAllClients({ kind = "cart", message = "GEROBAK LIAR! Runaway food cart incoming — get out of the lane!" })
 	task.wait(GameConfig.CART_WARNING_SECONDS)
@@ -51,12 +54,10 @@ function HazardServer_sambalTsunami()
 		local character = player.Character
 		if state ~= nil and character ~= nil then
 			local root = character:FindFirstChild("HumanoidRootPart")
-			local hasDuck = false
-			for _, petIndex in ipairs(state.pets) do
-				if GameConfig.PETS[petIndex] ~= nil and GameConfig.PETS[petIndex].name == "Bebek Karet" then
-					hasDuck = true
-				end
-			end
+			-- Bebek Karet makes its owner wave-proof; everyone else is safe
+			-- only past X = 60, inside their own base. Caught outside, the
+			-- wave takes 10% of the player's cash and throws them forward.
+			local hasDuck = StateStore.hasPetByName(state, "Bebek Karet")
 			local inBase = root ~= nil and math.abs(root.Position.X) > 60
 			if not inBase and not hasDuck then
 				state.cash = math.floor(state.cash * 0.9)

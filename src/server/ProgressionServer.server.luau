@@ -34,6 +34,8 @@ function ProgressionServer_rebirth(player)
 	if state.cash < tier.needCash or #state.collection < tier.needCount then
 		return
 	end
+	-- Rebirth resets cash, collection and base slots — but keeps upgrades
+	-- and pets, so every rebirth starts faster than the last one did.
 	state.rebirth += 1
 	state.cash = GameConfig.START_CASH
 	state.collection = {}
@@ -77,6 +79,8 @@ function ProgressionServer_hatchEgg(player, eggIndex)
 	local pool = BrainrotCatalog.listByRarity(rarity)
 	local entry = pool[rng:NextInteger(1, #pool)]
 	local mutation = BrainrotCatalog.rollMutation(rng)
+	-- A hatched brainrot that cannot fit in a full base refunds the whole
+	-- egg price: the player loses nothing for an egg that could not hatch.
 	local ok, err = StateStore.addBrainrot(state, entry.id, mutation)
 	if not ok then
 		state.cash += egg.price
@@ -93,6 +97,8 @@ function ProgressionServer_buyPet(player, petIndex)
 	if pet == nil or state.cash < pet.price then
 		return
 	end
+	-- Buying a pet already owned only switches it active again — no second
+	-- charge for a companion the player already paid for.
 	for _, owned in ipairs(state.pets) do
 		if owned == petIndex then
 			state.activePet = petIndex

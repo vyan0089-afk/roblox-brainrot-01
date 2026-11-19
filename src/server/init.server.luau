@@ -22,6 +22,9 @@ local BASE_POSITIONS = {
 	Vector3.new(80, 1, -70),
 }
 
+-- Bases sit in two rows of four around the plaza (x from -80 to 80, z +70
+-- and -70). The first player to join gets base 1, the next base 2, and so
+-- on; a full server reuses base 1 rather than leaving a player homeless.
 local function assignBase(player)
 	local taken = {}
 	for _, other in ipairs(Players:GetPlayers()) do
@@ -46,6 +49,8 @@ local function onPlayerAdded(player)
 		local spawn = BASE_POSITIONS[state.baseIndex] or BASE_POSITIONS[1]
 		task.wait(0.2)
 		local root = character:WaitForChild("HumanoidRootPart")
+		-- Spawn 3 studs above the base pad so the character lands on it
+		-- instead of clipping into the floor on a slow load.
 		root.CFrame = CFrame.new(spawn + Vector3.new(0, 3, 0))
 		StateUpdate:FireClient(player, StateStore.snapshotForClient(state))
 	end)

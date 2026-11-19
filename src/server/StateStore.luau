@@ -108,6 +108,9 @@ function StateStore.checkIndexBonus(state, brainrotId)
 			complete = false
 		end
 	end
+	-- The bonus pays once per completed rarity, not once per brainrot, so
+	-- finishing Common pays $500 exactly once no matter how many Commons
+	-- the player buys afterwards.
 	if complete then
 		state.indexBonusPaid[entry.rarity] = true
 		state.cash += GameConfig.INDEX_BONUSES[entry.rarity].bonus
@@ -156,6 +159,18 @@ function StateStore.indexCount(state)
 		n += 1
 	end
 	return n
+end
+
+-- True when the player owns (and may have active) a pet with this name.
+-- Hazards ask this instead of scanning the pet list themselves.
+function StateStore.hasPetByName(state, petName)
+	for _, petIndex in ipairs(state.pets) do
+		local pet = GameConfig.PETS[petIndex]
+		if pet ~= nil and pet.name == petName then
+			return true
+		end
+	end
+	return false
 end
 
 return StateStore
