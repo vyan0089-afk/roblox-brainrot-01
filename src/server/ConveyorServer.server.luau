@@ -20,6 +20,8 @@ conveyorFolder.Name = "ConveyorBrainrots"
 conveyorFolder.Parent = Workspace
 
 local live = {}
+-- Seeded with the competition date, so every server opens with the same
+-- parade order: a new player always meets the same first brainrots.
 local rng = Random.new(20261119)
 
 local function spawnConveyorBrainrot()
@@ -56,6 +58,8 @@ end
 function ConveyorServer_tick(dt)
 	for i = #live, 1, -1 do
 		local record = live[i]
+		-- 6 studs a second across a 120-stud belt: a brainrot is on show for
+		-- 20 seconds from spawn to the far end, then it is gone for good.
 		record.x += 6 * dt
 		local body = record.model.PrimaryPart
 		if body ~= nil then
@@ -73,6 +77,8 @@ function ConveyorServer_buyBrainrot(player, brainrotName)
 	if state == nil then
 		return
 	end
+	-- Buyers pick by name (the model is named after its brainrot). If two
+	-- of the same brainrot ride the belt, the earliest one sells first.
 	local slotIndex = nil
 	for i, record in ipairs(live) do
 		if BrainrotCatalog.getBrainrot(record.brainrotId).name == brainrotName then
