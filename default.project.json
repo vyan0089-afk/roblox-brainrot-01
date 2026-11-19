@@ -11,6 +11,7 @@
         ],
         "Brightness": 1.5,
         "ClockTime": 20.5,
+        "FogEnd": 100000,
         "GlobalShadows": true,
         "Outlines": false,
         "Technology": "Voxel"

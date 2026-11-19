@@ -15,7 +15,11 @@ A 3D Roblox brainrot game for make.fun's "Make the best AI Roblox brainrot game"
 - `main.ts` (Node 22, standard library only) hands the game in: it copies `game.rbxl`, `src/`, `screenshots/` and `PLAY.json` to `/output` and writes `/output/dossier.json` with `vendor/makefun-roblox.ts`, the kit's copy, unchanged.
 - `game.rbxl` is the place Rojo builds from `src/` and `default.project.json` (`rojo build default.project.json --output game.rbxl`).
 - `screenshots/` holds four renders of the game world; the first is the thumbnail. **Note:** no Roblox Studio exists on the Linux build machine, so these are stand-in renders drawn from the built world data, not Studio captures — real Studio screenshots are still needed before submit.
-- `PLAY.json` names no place yet: the game still has to be published as a Public Roblox experience and PLAY.json filled in before submit.
+
+## Live game
+
+The entry is published and playable at https://www.roblox.com/games/13067766964/Warung-Brainrot-Bazaar (universe 4565810974, place 13067766964). It went live on the account's default place, renamed "Warung Brainrot Bazaar" and set Public with the play code in its description, because Roblox offers no way to create a new experience from the web dashboard or the Open Cloud API — both routes require Roblox Studio (Windows/Mac). The game file itself was uploaded through the Open Cloud Assets API, and the icon + first thumbnail were set in the Creator Dashboard.
+- `PLAY.json` names the live published place: universe 4565810974, place 13067766964 — https://www.roblox.com/games/13067766964/Warung-Brainrot-Bazaar (Public, description holds the play code `makefun-lemon-firefly-ribbon`).
 
 Run it as the grader does, writing `out/` in place of `/output`:
 
